@@ -1,4 +1,4 @@
-const GOOGLE_AI_STUDIO_API_KEY = 'AIzaSyCZk3oQThfQwe3JWBF8QrMDCrJbgvyIRYE';
+const GOOGLE_AI_STUDIO_API_KEY = 'AIzaSyBq3tmlM71I0nJKiv4cejhKuGOAxtmmBxI';
 const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-pro-exp-02-05:generateContent?key=' + GOOGLE_AI_STUDIO_API_KEY;
 const PLAYAI_USER_ID = 'afsBmgPo3jYppKElolGL7vr5oOi2';
 const PLAYAI_SECRET_KEY = 'ak-bbd9c8a7e3704eb087e392a919ab7160';
