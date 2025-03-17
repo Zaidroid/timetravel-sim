@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.timeline-form {
+  transition: max-width 0.5s ease;
+}
+
+.timeline-form.collapsed {
+  max-width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.historical-context ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.historical-context li::before {
+  content: "-";
+  margin-right: 0.5em;
+}
+
+.historical-context.arabic-list ul {
+    list-style: none; /* Remove default bullet points */
+    padding-right: 0; /* Adjust padding for Arabic */
+}
+
+.historical-context.arabic-list li::before {
+    content: "-"; /* Use a dash as the bullet point */
+    margin-left: 0.5em; /* Adjust spacing for Arabic */
+    margin-right: 0;
+}
+
+/* Custom glow effect */
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #3B82F6, 0 0 20px #3B82F6, 0 0 25px #3B82F6, 0 0 30px #3B82F6, 0 0 35px #3B82F6;
+  }
+  to {
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #4F46E5, 0 0 40px #4F46E5, 0 0 50px #4F46E5, 0 0 60px #4F46E5, 0 0 70px #4F46E5;
+  }
+}
+
+.hover\:shadow-glow:hover {
+  animation: glow 1s ease-in-out infinite alternate;
+}
