@@ -50,7 +50,7 @@ const TimelineForm: React.FC<TimelineFormProps> = ({
 
   const palestinianCities = ['Jerusalem', 'Gaza', 'Ramallah', 'Bethlehem', 'Hebron', 'Nablus', 'Jenin', 'Tulkarem', 'Qalqilya', 'Jericho'];
   const palestinianCitiesArabic = ['القدس', 'غزة', 'رام الله', 'بيت لحم', 'الخليل', 'نابلس', 'جنين', 'طولكرم', 'قلقيلية', 'أريحا'];
-  
+
   const maleNamesEn = ['Ahmad', 'Mohammed', 'Omar', 'Ali', 'Khaled', 'Mahmoud', 'Ibrahim', 'Yousef', 'Sami', 'Karim'];
   const femaleNamesEn = ['Fatima', 'Aisha', 'Layla', 'Noor', 'Huda', 'Amira', 'Rania', 'Zainab', 'Mariam', 'Sara'];
   const maleNamesAr = ['أحمد', 'محمد', 'عمر', 'علي', 'خالد', 'محمود', 'إبراهيم', 'يوسف', 'سامي', 'كريم'];
@@ -82,8 +82,8 @@ const TimelineForm: React.FC<TimelineFormProps> = ({
         if (!formData.city.trim()) newErrors.city = t('errors.cityRequired');
         break;
       case 2: // Traveler Info
-        if (!formData.name.trim()) newErrors.name = t('errors.nameRequired');
-        else if (formData.name.trim().length < 2) newErrors.name = t('errors.nameTooShort');
+    if (!formData.name.trim()) newErrors.name = t('errors.nameRequired');
+    else if (formData.name.trim().length < 2) newErrors.name = t('errors.nameTooShort');
         if (!formData.age || formData.age < 5 || formData.age > 90) newErrors.age = t('errors.ageInvalid');
         break;
     }
@@ -482,13 +482,13 @@ const TimelineForm: React.FC<TimelineFormProps> = ({
             hover:from-indigo-600/20 hover:to-teal-500/20 
             dark:hover:from-cyan-400/20 dark:hover:to-teal-400/20 
             transition-all duration-300"
-          type="button"
+        type="button"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <motion.div whileTap={{ rotate: 360, transition: { duration: 0.5 } }}>
+        <motion.div whileTap={{ rotate: 360, transition: { duration: 0.5 } }}>
             <Sparkles className="w-5 h-5" />
-          </motion.div>
+        </motion.div>
         </motion.button>
 
         <div className="flex gap-2">
