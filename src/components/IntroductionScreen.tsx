@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import { Clock, Map, Book, ArrowRight, ChevronRight, ScrollText, Sparkles, Globe, MoonIcon, SunIcon } from 'lucide-react';
+import AnimatedBackground from './AnimatedBackground';
 
 interface IntroductionScreenProps {
   onComplete: () => void;
@@ -13,6 +14,12 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({ onComplete }) =
   const { isDarkMode, toggleTheme } = useTheme();
   const [currentStep, setCurrentStep] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [backgroundKey, setBackgroundKey] = useState(0);
+
+  // Force background re-render when theme changes
+  useEffect(() => {
+    setBackgroundKey(prev => prev + 1);
+  }, [isDarkMode]);
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'ar' : 'en');
@@ -108,8 +115,11 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({ onComplete }) =
       transition={{ duration: 0.5 }}
       dir={language === 'ar' ? 'rtl' : 'ltr'}
     >
+      {/* Animated Background */}
+      <AnimatedBackground isDarkMode={isDarkMode} />
+
       {/* Background Elements */}
-      <div className="absolute inset-0 -z-10">
+      <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 right-0 h-2/3 bg-gradient-to-b from-indigo-600/5 to-transparent dark:from-cyan-400/5"></div>
         <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-teal-500/5 to-transparent dark:from-teal-400/5"></div>
       </div>
@@ -118,7 +128,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({ onComplete }) =
       <div className={`absolute top-0 ${language === 'ar' ? 'left-0' : 'right-0'} p-4 flex items-center gap-4`}>
         <motion.button
           onClick={toggleLanguage}
-          className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-600/10 to-teal-500/10 dark:from-cyan-400/10 dark:to-teal-400/10 text-indigo-700 dark:text-cyan-300 font-medium hover:from-indigo-600/20 hover:to-teal-500/20 dark:hover:from-cyan-400/20 dark:hover:to-teal-400/20 transition-all duration-300"
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 font-medium shadow-lg hover:shadow-xl transition-all duration-300"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -130,7 +140,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({ onComplete }) =
         
         <motion.button
           onClick={toggleTheme}
-          className="p-2 rounded-full bg-gradient-to-r from-indigo-600/10 to-teal-500/10 dark:from-cyan-400/10 dark:to-teal-400/10 text-indigo-700 dark:text-cyan-300 hover:from-indigo-600/20 hover:to-teal-500/20 dark:hover:from-cyan-400/20 dark:hover:to-teal-400/20 transition-all duration-300"
+          className="p-2 rounded-full bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 shadow-lg hover:shadow-xl transition-all duration-300"
           whileHover={{ 
             scale: 1.1,
             rotate: isDarkMode ? -15 : 15
@@ -174,36 +184,48 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({ onComplete }) =
             className="flex flex-col md:flex-row gap-8 items-center"
           >
             {/* Image Section - Order depends on language */}
-            <div className={`w-full md:w-1/2 aspect-[4/3] overflow-hidden rounded-2xl ${language === 'ar' ? 'md:order-2' : ''}`}>
+            <motion.div 
+              className={`w-full md:w-1/2 aspect-[4/3] overflow-hidden rounded-2xl border-2 border-transparent hover:border-indigo-500 dark:hover:border-cyan-400 transition-colors duration-300 ${language === 'ar' ? 'md:order-2' : ''} hidden md:block`}
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
               <motion.img
                 src={steps[currentStep].image}
                 alt={steps[currentStep].title}
                 className="w-full h-full object-cover"
                 initial={{ scale: 1.1 }}
                 animate={{ scale: 1 }}
+                whileHover={{ scale: 1.2 }}
                 transition={{ duration: 0.7 }}
               />
-            </div>
+            </motion.div>
 
             {/* Text Section - Order depends on language */}
-            <div className={`w-full md:w-1/2 flex flex-col p-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-800 shadow-lg ${language === 'ar' ? 'md:order-1' : ''}`}>
+            <motion.div 
+              className={`w-full md:w-1/2 flex flex-col p-6 bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-cyan-400 shadow-lg transition-colors duration-300 ${language === 'ar' ? 'md:order-1' : ''}`}
+            >
               <div className="mb-4 flex justify-center">
-                {steps[currentStep].icon}
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  {steps[currentStep].icon}
+                </motion.div>
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 bg-gradient-to-r from-indigo-600 to-teal-500 dark:from-cyan-400 dark:to-teal-400 text-transparent bg-clip-text">
+              <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 bg-gradient-to-r from-indigo-600 via-teal-500 to-indigo-600 dark:from-cyan-400 dark:via-teal-400 dark:to-cyan-400 text-transparent bg-clip-text">
                 {steps[currentStep].title}
               </h2>
-              <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 mb-8 text-center leading-relaxed">
+              <p className="text-base md:text-lg text-gray-900 dark:text-gray-200 mb-8 text-center leading-relaxed">
                 {steps[currentStep].description}
               </p>
 
               <div className="flex justify-between mt-auto">
                 <motion.button
                   onClick={previousStep}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all duration-300
                     ${currentStep === 0 
                       ? 'opacity-0 pointer-events-none' 
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'}`}
+                      : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-200 hover:shadow-lg'}`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -213,10 +235,10 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({ onComplete }) =
 
                 <motion.button
                   onClick={nextStep}
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-white
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-white transition-all duration-300
                     bg-gradient-to-r from-indigo-600 to-teal-500 dark:from-cyan-400 dark:to-teal-400 
                     hover:from-teal-500 hover:to-indigo-600 dark:hover:from-teal-400 dark:hover:to-cyan-400 
-                    transition-all duration-300 shadow-md"
+                    shadow-lg hover:shadow-xl"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -228,20 +250,22 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({ onComplete }) =
                   {language === 'ar' ? <ArrowRight className="w-5 h-5 rotate-180" /> : <ArrowRight className="w-5 h-5" />}
                 </motion.button>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         </AnimatePresence>
       </div>
 
       {/* Skip Button */}
-      <motion.button
-        onClick={onComplete}
-        className="absolute bottom-8 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        {language === 'ar' ? 'تخطي المقدمة' : 'Skip Introduction'}
-      </motion.button>
+      <div className="fixed inset-x-0 bottom-8 flex justify-center z-50">
+        <motion.button
+          onClick={onComplete}
+          className="px-6 py-3 rounded-full bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          {language === 'ar' ? 'تخطي المقدمة' : 'Skip Introduction'}
+        </motion.button>
+      </div>
     </motion.div>
   );
 };
